@@ -1,1 +1,5 @@
-console.log('Test deploy script');
+import 'pixi';
+import 'p2';
+import Game from './Game';
+
+window.game = new Game();
