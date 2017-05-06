@@ -1,4 +1,9 @@
 export default {
-  gameWidth: 1024,
-  gameHeight: 672,
+  GAME_WIDTH: 160,
+  GAME_HEIGHT: 256,
+
+  BLOCK_SIDE_LENGTH: 16,
+
+  BOARD_WIDTH: 10,
+  BOARD_HEIGHT: 16,
 };
