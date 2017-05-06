@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const phaserModule = path.join(__dirname, '/node_modules/phaser-ce/');
 const phaser = path.join(phaserModule, 'build/custom/phaser-split.js');
@@ -15,7 +16,8 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name].[chunkhash].js',
+    filename: 'assets/[name].[chunkhash].js',
+    publicPath: '',
   },
   devtool: 'source-map',
   module: {
@@ -49,6 +51,13 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'manifest'],
     }),
+    new CopyWebpackPlugin([
+      {
+        from: 'src/assets/images/*',
+        to: 'assets/',
+        flatten: true,
+      },
+    ]),
   ],
   resolve: {
     alias: {
