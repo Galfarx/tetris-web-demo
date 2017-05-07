@@ -11,6 +11,9 @@ export default class Shape {
 
     this.shape = null;
     this.blocks = [];
+
+    this.isTweening = false;
+    this.tweenCounter = 0;
   }
 
   createRandomShape() {
@@ -48,6 +51,14 @@ export default class Shape {
     this.centerX = null;
     this.centerY = null;
     this.blocks = null;
+  }
+
+  updateTween() {
+    if (this.tweenCounter > 10) {
+      this.isTweening = false;
+      this.tweenCounter = 0;
+    }
+    this.tweenCounter++;
   }
 
   placeShapeInBoard() {

@@ -37,7 +37,42 @@ export default class extends Phaser.State {
       }
       this.turnCounter = 0;
     } else {
+      this.handleInput();
       this.turnCounter++;
     }
+  }
+
+  handleInput() {
+    if (this.activeShape.isTweening) {
+      this.activeShape.updateTween();
+    } else if (this.cursors.up.isDown) {
+      if (this.activeShape.canRotate()) {
+        this.activeShape.rotate();
+      }
+    } else if (this.cursors.left.isDown) {
+      if (this.activeShape.canMoveShape(config.MOVE_LEFT)) {
+        this.activeShape.moveShape(config.MOVE_LEFT);
+        this.activeShape.isTweening = true;
+      }
+    } else if (this.cursors.right.isDown) {
+      if (this.activeShape.canMoveShape(config.MOVE_RIGHT)) {
+        this.activeShape.moveShape(config.MOVE_RIGHT);
+        this.activeShape.isTweening = true;
+      }
+    } else if (this.cursors.down.isDown) {
+      this.turnCounter += this.turnLength / 5;
+    }
+  }
+
+  promoteShapes() {
+    this.activeShape = null;
+
+    this.nextShape.clearPreview();
+    this.activeShape = this.nextShape;
+    this.activeShape.activate();
+
+    this.nextShape = new Shape();
+    this.nextShape.randomizeShape();
+    this.nextShape.preview();
   }
 }
