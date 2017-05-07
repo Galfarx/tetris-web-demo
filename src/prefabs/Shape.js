@@ -61,6 +61,47 @@ export default class Shape {
     this.tweenCounter++;
   }
 
+  rotate() {
+    if (!this.canRotate()) {
+      const msg = {
+        msg: 'Cannot rotate active shape',
+      };
+      throw msg;
+    }
+
+    let newX;
+    let newY;
+    const newOrientation = (this.orientation + 1) % config.NUMBER_OF_SHAPE_ORIENTATIONS;
+
+    for (let i = 0; i < this.blocks.length; i++) {
+      newX = this.centerX + this.shape.orientation[newOrientation].blockPosition[i].x;
+      newY = this.centerY + this.shape.orientation[newOrientation].blockPosition[i].y;
+      this.blocks[i].moveBlock(newX, newY);
+    }
+    this.orientation = newOrientation;
+    this.isTweening = true;
+  }
+
+  canRotate() {
+    if (this.isTweening) {
+      return false;
+    }
+
+    let newX;
+    let newY;
+    const newOrientation = (this.orientation + 1) % config.NUMBER_OF_SHAPE_ORIENTATIONS;
+
+    for (let i = 0; i < this.blocks.length; i++) {
+      newX = this.centerX + this.shape.orientation[newOrientation].blockPosition[i].x;
+      newY = this.centerY + this.shape.orientation[newOrientation].blockPosition[i].y;
+
+      if (!this.isOnBoard(newX, newY) || this.isOccupied(newX, newY)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   placeShapeInBoard() {
     let block;
 
