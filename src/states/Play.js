@@ -23,6 +23,9 @@ export default class extends Phaser.State {
     this.turnLength = 60;
     this.turnCounter = 0;
 
+    this.nextShape = new Shape();
+    this.nextShape.createRandomShape();
+
     this.activeShape = new Shape();
     this.activeShape.createRandomShape();
     this.activeShape.activate();
@@ -34,6 +37,7 @@ export default class extends Phaser.State {
         this.activeShape.moveShape(config.MOVE_DOWN);
       } else {
         this.activeShape.placeShapeInBoard();
+        this.promoteShapes();
       }
       this.turnCounter = 0;
     } else {
@@ -66,13 +70,10 @@ export default class extends Phaser.State {
 
   promoteShapes() {
     this.activeShape = null;
-
-    this.nextShape.clearPreview();
     this.activeShape = this.nextShape;
     this.activeShape.activate();
 
     this.nextShape = new Shape();
-    this.nextShape.randomizeShape();
-    this.nextShape.preview();
+    this.nextShape.createRandomShape();
   }
 }
