@@ -8,6 +8,9 @@ export default class extends Phaser.State {
   }
 
   create() {
+    window.Tetris.shapesJSON = this.game.cache.getJSON('shapes');
+    window.Tetris.shapes = window.Tetris.shapesJSON.shapes;
+    
     this.board = new Array(config.BOARD_HEIGHT);
     for (let i = 0; i < config.BOARD_HEIGHT; i++) {
       this.board[i] = new Array(this.BOARD_WIDTH);
