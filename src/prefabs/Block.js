@@ -1,3 +1,4 @@
+import Phaser from 'phaser';
 import config from '../config';
 
 
@@ -27,5 +28,22 @@ export default class Block {
       x: spriteX,
       y: spriteY,
     };
+  }
+
+  moveBlock(newX, newY) {
+    this.x = newX;
+    this.y = newY;
+
+    const spriteLocation = this.getSpriteLocation();
+    const duration = 55;
+    const repeat = 0;
+    const ease = Phaser.Easing.Quadratic.In;
+    const autoStart = false;
+    const delay = 0;
+    const yoyo = false;
+
+    this.tween = window.Tetris.game.add.tween(this.sprite)
+    .to(spriteLocation, duration, ease, autoStart, delay, repeat, yoyo);
+    this.tween.start();
   }
 }

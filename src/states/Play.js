@@ -12,16 +12,24 @@ export default class extends Phaser.State {
     window.Tetris.shapesJSON = this.game.cache.getJSON('shapes');
     window.Tetris.shapes = window.Tetris.shapesJSON.shapes;
 
-    this.board = new Array(config.BOARD_HEIGHT);
+    window.Tetris.board = new Array(config.BOARD_HEIGHT);
     for (let i = 0; i < config.BOARD_HEIGHT; i++) {
-      this.board[i] = new Array(this.BOARD_WIDTH);
+      window.Tetris.board[i] = new Array(this.BOARD_WIDTH);
       for (let j = 0; j < config.BOARD_WIDTH; j++) {
-        this.board[i][j] = null;
+        window.Tetris.board[i][j] = null;
       }
     }
 
     this.activeShape = new Shape();
     this.activeShape.createRandomShape();
     this.activeShape.activate();
+  }
+
+  update() {
+    if (this.activeShape !== null && this.activeShape.canMoveShape(config.MOVE_DOWN)) {
+      this.activeShape.moveShape(config.MOVE_DOWN);
+    } else {
+      this.activeShape.placeShapeInBoard();
+    }
   }
 }
