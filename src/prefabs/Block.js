@@ -20,6 +20,14 @@ export default class Block {
     this.sprite = window.Tetris.game.add.sprite(spriteLocation.x, spriteLocation.y, 'block', this.color);
   }
 
+  clean() {
+    this.x = null;
+    this.y = null;
+    this.color = null;
+    this.sprite.destroy();
+    this.sprite = null;
+  }
+
   getSpriteLocation() {
     const spriteX = this.x * config.BLOCK_SIDE_LENGTH;
     const spriteY = this.y * config.BLOCK_SIDE_LENGTH;

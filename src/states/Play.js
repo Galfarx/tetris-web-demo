@@ -23,6 +23,9 @@ export default class extends Phaser.State {
     this.turnLength = 60;
     this.turnCounter = 0;
 
+    this.completedRows = [];
+    this.isUpdatingAfterRowClear = false;
+
     this.nextShape = new Shape();
     this.nextShape.createRandomShape();
 
@@ -37,9 +40,23 @@ export default class extends Phaser.State {
         this.activeShape.moveShape(config.MOVE_DOWN);
       } else {
         this.activeShape.placeShapeInBoard();
-        this.promoteShapes();
+        this.completedRows = this.getCompleteRows();
+        if (this.completedRows.length > 0) {
+          this.clearRow(this.completedRows);
+          this.isUpdatingAfterRowClear = true;
+        } else {
+          this.promoteShapes();
+        }
+        this.completedRows = [];
       }
       this.turnCounter = 0;
+    } else if (this.isUpdatingAfterRowClear) {
+      if (this.turnCounter >= this.turnLength / 10) {
+        this.isUpdatingAfterRowClear = false;
+        this.promoteShapes();
+      } else {
+        this.turnCounter++;
+      }
     } else {
       this.handleInput();
       this.turnCounter++;
@@ -75,5 +92,59 @@ export default class extends Phaser.State {
 
     this.nextShape = new Shape();
     this.nextShape.createRandomShape();
+  }
+
+  getCompleteRows() {
+    const completeRows = [];
+
+    for (let i = 0; i < window.Tetris.board.length; i++) {
+      if (this.isRowFull(i)) {
+        completeRows.push(i);
+      }
+    }
+    return completeRows;
+  }
+
+  isRowFull(row) {
+    for (let i = 0; i < window.Tetris.board[row].length; i++) {
+      if (window.Tetris.board[row][i] === null) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  clearRow(completedRows) {
+    let row;
+    let actualRowToClear;
+    let alreadyShifted = 0;
+
+    for (let i = completedRows.length - 1; i >= 0; i--) {
+      actualRowToClear = completedRows[i] + alreadyShifted;
+
+      row = window.Tetris.board[actualRowToClear];
+
+      for (let j = 0; j < row.length; j++) {
+        window.Tetris.board[actualRowToClear][j].clean();
+        window.Tetris.board[actualRowToClear][j] = null;
+      }
+      this.dropRowsAbove(actualRowToClear - 1);
+      alreadyShifted++;
+    }
+  }
+
+  dropRowsAbove(row) {
+    let block;
+
+    for (let i = row; i >= 0; i--) {
+      for (let j = 0; j < window.Tetris.board[i].length; j++) {
+        block = window.Tetris.board[i][j];
+        if (block !== null) {
+          window.Tetris.board[i][j].moveBlock(block.x, block.y + 1);
+          window.Tetris.board[i + 1][j] = window.Tetris.board[i][j];
+          window.Tetris.board[i][j] = null;
+        }
+      }
+    }
   }
 }
