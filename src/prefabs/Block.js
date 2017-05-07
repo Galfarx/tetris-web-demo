@@ -16,7 +16,7 @@ export default class Block {
 
     const spriteLocation = this.getSpriteLocation();
 
-    this.sprite = window.game.add.sprite(spriteLocation.x, spriteLocation.y, 'block', this.color);
+    this.sprite = window.Tetris.game.add.sprite(spriteLocation.x, spriteLocation.y, 'block', this.color);
   }
 
   getSpriteLocation() {

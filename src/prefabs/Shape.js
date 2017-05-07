@@ -26,4 +26,18 @@ export default class Shape {
       this.blocks[i] = new Block();
     }
   }
+
+  activate() {
+    let newX;
+    let newY;
+    this.shape = window.Tetris.shapes[this.type];
+    this.centerX = this.shape.orientation[this.orientation].startingLocation.x;
+    this.centerY = this.shape.orientation[this.orientation].startingLocation.y;
+
+    for (let i = 0; i < this.blocks.length; i++) {
+      newX = this.centerX + this.shape.orientation[this.orientation].blockPosition[i].x;
+      newY = this.centerY + this.shape.orientation[this.orientation].blockPosition[i].y;
+      this.blocks[i].createBlock(newX, newY, this.color);
+    }
+  }
 }
