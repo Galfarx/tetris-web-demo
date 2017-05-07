@@ -57,6 +57,11 @@ module.exports = {
         to: 'assets/',
         flatten: true,
       },
+      {
+        from: 'src/assets/data/*',
+        to: 'assets/',
+        flatten: true,
+      },
     ]),
   ],
   resolve: {
