@@ -86,12 +86,20 @@ export default class extends Phaser.State {
   }
 
   promoteShapes() {
+    if (this.activeShape.onBlockOccupied.has(this.gameOver)) {
+      this.activeShape.onBlockOccupied.remove(this.gameOver);
+    }
     this.activeShape = null;
     this.activeShape = this.nextShape;
+    this.activeShape.onBlockOccupied.add(this.gameOver);
     this.activeShape.activate();
 
     this.nextShape = new Shape();
     this.nextShape.createRandomShape();
+  }
+
+  gameOver() {
+    console.log('GameOver');
   }
 
   getCompleteRows() {

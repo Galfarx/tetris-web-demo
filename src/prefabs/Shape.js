@@ -1,3 +1,4 @@
+import Phaser from 'phaser';
 import config from '../config';
 import Block from './Block';
 
@@ -14,6 +15,8 @@ export default class Shape {
 
     this.isTweening = false;
     this.tweenCounter = 0;
+
+    this.onBlockOccupied = new Phaser.Signal();
   }
 
   createRandomShape() {
@@ -107,6 +110,9 @@ export default class Shape {
 
     for (let i = 0; i < this.blocks.length; i++) {
       block = this.blocks[i];
+      if (this.isOccupied(block.x, block.y)) {
+        this.onBlockOccupied.dispatch();
+      }
       window.Tetris.board[block.y][block.x] = this.blocks[i];
     }
   }
