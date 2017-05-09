@@ -98,10 +98,6 @@ export default class extends Phaser.State {
     this.nextShape.createRandomShape();
   }
 
-  gameOver() {
-    console.log('GameOver');
-  }
-
   getCompleteRows() {
     const completeRows = [];
 
@@ -154,5 +150,9 @@ export default class extends Phaser.State {
         }
       }
     }
+  }
+
+  gameOver() {
+    window.Tetris.game.state.start('Over');
   }
 }

@@ -12,7 +12,7 @@ export default class extends Phaser.State {
   }
 
   create() {
-    this.title = new Phaser.Text(this.game, this.game.world.centerX, this.game.world.centerY - 40, 'Simple Tetris', {
+    this.title = new Phaser.Text(this.game, this.game.world.centerX, this.game.world.centerY - 40, 'Game Over', {
       font: '18px Verdana',
       fill: 'white',
       align: 'center',
@@ -28,7 +28,7 @@ export default class extends Phaser.State {
       outFrame: null,
       downFrame: null,
       upFrame: null,
-      label: 'Start',
+      label: 'Play again',
       style: {
         font: '10px Verdana',
         fill: 'white',
@@ -36,7 +36,7 @@ export default class extends Phaser.State {
       },
     });
 
-    this.source = new TextButton({
+    this.menu = new TextButton({
       game: this.game,
       x: this.game.world.centerX,
       y: this.game.world.centerY + 20,
@@ -45,7 +45,7 @@ export default class extends Phaser.State {
       outFrame: null,
       downFrame: null,
       upFrame: null,
-      label: 'View source code',
+      label: 'Menu',
       style: {
         font: '10px Verdana',
         fill: 'white',
@@ -57,13 +57,13 @@ export default class extends Phaser.State {
       this.state.start('Play');
     });
 
-    this.source.onInputUp.add(() => {
-      window.open('https://github.com/Galfarx/tetris-web-demo', '_blank');
+    this.menu.onInputUp.add(() => {
+      this.state.start('Menu');
     });
 
     this.menuPanel = this.add.group();
     this.menuPanel.add(this.title);
     this.menuPanel.add(this.start);
-    this.menuPanel.add(this.source);
+    this.menuPanel.add(this.menu);
   }
 }
